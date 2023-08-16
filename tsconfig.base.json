@@ -14,7 +14,30 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@azure-event-ingestion-sample/azure/event-hub": [
+        "libs/azure/event-hub/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/azure/service-bus": [
+        "libs/azure/service-bus/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/core": ["libs/core/src/index.ts"],
+      "@azure-event-ingestion-sample/datasource/device": [
+        "libs/datasource/device/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/datasource/user": [
+        "libs/datasource/user/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/modules/application": [
+        "libs/modules/application/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/modules/device": [
+        "libs/modules/device/src/index.ts"
+      ],
+      "@azure-event-ingestion-sample/modules/user": [
+        "libs/modules/user/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

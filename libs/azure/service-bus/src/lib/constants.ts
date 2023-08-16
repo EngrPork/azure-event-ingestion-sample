@@ -1,0 +1,2 @@
+export const AZURE_SERVICE_BUS_CLIENT = Symbol("AZURE_SERVICE_BUS_CLIENT")
+export const QUEUE_HANDLERS = Symbol("QUEUE_HANDLERS")
