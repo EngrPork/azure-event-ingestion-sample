@@ -4,33 +4,34 @@ import {
   QueueHandlerRegistryService,
 } from '@azure-event-ingestion-sample/azure/service-bus';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '@azure-event-ingestion-sample/modules/user';
+
 import { Model } from 'mongoose';
+import { Device } from '@azure-event-ingestion-sample/modules/device';
 
 @Injectable()
-export class CreateUserService implements QueueHandler {
-  private readonly logger = new Logger(CreateUserService.name);
+export class CreateDeviceService implements QueueHandler {
+  private readonly logger = new Logger(CreateDeviceService.name);
 
-  readonly eventType = 'create-user';
-  readonly queueName = 'service-a';
+  readonly eventType = 'create-device';
+  readonly queueName = 'service-b';
 
   constructor(
     private readonly queueHandlerRegistryService: QueueHandlerRegistryService,
-    @InjectModel(User.name) private userModel: Model<User>
+    @InjectModel(Device.name) private deviceModel: Model<Device>
   ) {
-    queueHandlerRegistryService.registerHandler('service-a', this);
+    queueHandlerRegistryService.registerHandler('service-b', this);
   }
 
   async handleMessage(message: any): Promise<void> {
     console.log('Handling message', message);
 
-    return this.userModel
+    return this.deviceModel
       .create({
         ...message,
-        name: 'user.' + Math.random().toString(36).substring(7),
+        title: 'device.' + Math.random().toString(36).substring(7),
       })
-      .then((user) => {
-        this.logger.log('User created', user);
+      .then((device) => {
+        this.logger.log('Device created', device);
       })
       .catch((err) => {
         this.logger.error(err);
