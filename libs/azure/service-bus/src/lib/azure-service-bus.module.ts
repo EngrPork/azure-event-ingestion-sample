@@ -1,10 +1,8 @@
 import {DynamicModule, Global, Module} from '@nestjs/common';
 import {ServiceBusClient} from "@azure/service-bus";
 import {ConfigService} from "@nestjs/config";
-import {AzureServiceBusReceiverService} from "./azure-service-bus-receiver.service";
-import {AzureServiceBusSenderService} from "./azure-service-bus-sender.service";
 import {AZURE_SERVICE_BUS_CLIENT} from "./constants";
-import {QueueHandlerRegistryService} from "./queue-handler-registry.service";
+import {AzureServiceBusReceiverService, AzureServiceBusSenderService, QueueHandlerRegistryService} from "./service";
 
 @Module({
   providers: [AzureServiceBusReceiverService, AzureServiceBusSenderService, QueueHandlerRegistryService],

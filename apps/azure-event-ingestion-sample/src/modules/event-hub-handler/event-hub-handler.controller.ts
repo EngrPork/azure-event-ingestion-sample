@@ -14,7 +14,7 @@ export class EventHubHandlerController {
    * @param body
    */
   @Post()
-  emitHttpToEventHub(@Body() body: any) {
+  emitHttpToEventHub(@Body() body: Record<string, unknown>) {
     return this.eventHubHandlerService.emitHttpToEventHub(body);
   }
 }

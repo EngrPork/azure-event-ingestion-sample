@@ -1,8 +1,9 @@
-import {Injectable} from "@nestjs/common";
-import {EventHandler} from "./interface/event-handler.interface";
+import {Injectable, Logger} from "@nestjs/common";
+import {EventHandler} from "../interface/event-handler.interface";
 
 @Injectable()
 export class EventHandlerRegistryService {
+  private readonly logger = new Logger(EventHandlerRegistryService.name);
   private handlers: EventHandler = {};
 
   public registerHandler(eventType: string, handler: (params: unknown) => void): void {
@@ -12,7 +13,7 @@ export class EventHandlerRegistryService {
   }
 
   public triggerHandler(eventType: string, params: unknown): void {
-    console.log("Triggering handler for event type", eventType, params)
+    this.logger.log("Triggering handler for event type", eventType, params)
     const handler = this.getHandler(eventType)
     return handler && handler(params)
   }

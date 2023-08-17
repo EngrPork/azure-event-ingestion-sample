@@ -31,10 +31,12 @@ export class AzureEventHubService implements OnModuleInit, OnModuleDestroy {
   private initialize() {
     this.consumerClient.subscribe({
       processEvents: async (events, context) => {
+        this.logger.log(`Available event handlers:`, this.eventHandlerRegistryService.getAllEventTypes());
         for (const event of events) {
           this.logger.log(`Received event:`, event.body);
-          const eventType = event.body.eventType;
-          this.logger.log(`Received events:`, this.eventHandlerRegistryService.getAllEventTypes());
+          this.logger.log(`Event type:`, event)
+          const eventType = event.properties.eventType;
+
           if (this.eventHandlerRegistryService.getAllEventTypes().includes(eventType)) {
             this.eventHandlerRegistryService.triggerHandler(eventType, event.body);
           }

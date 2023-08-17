@@ -1,7 +1,8 @@
 import {Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit} from '@nestjs/common';
-import {AZURE_SERVICE_BUS_CLIENT} from "./constants";
 import {ServiceBusClient, ServiceBusReceiver} from "@azure/service-bus";
+import {AZURE_SERVICE_BUS_CLIENT} from "../constants";
 import {QueueHandlerRegistryService} from "./queue-handler-registry.service";
+
 
 @Injectable()
 export class AzureServiceBusReceiverService implements OnModuleDestroy, OnModuleInit {
@@ -23,7 +24,9 @@ export class AzureServiceBusReceiverService implements OnModuleDestroy, OnModule
 
       receiver.subscribe({
         processMessage: async (message) => {
+          this.logger.log(`Received message:`, message)
           const eventType = message.applicationProperties?.eventType;
+          if (!eventType) throw new Error("No event type found")
           const handler = this.handlers.getHandlers(queueName).find(h => h.eventType === eventType);
           if (handler) {
             await handler.handleMessage(message.body);
@@ -49,7 +52,7 @@ export class AzureServiceBusReceiverService implements OnModuleDestroy, OnModule
 
   public getReceiver(topic: string): ServiceBusReceiver {
     if (!this.receivers.has(topic)) {
-      console.log("Creating receiver for topic", topic)
+      this.logger.log("Creating receiver for topic", topic)
       const receiver = this.serviceBusClient.createReceiver(topic);
       this.receivers.set(topic, receiver);
     }

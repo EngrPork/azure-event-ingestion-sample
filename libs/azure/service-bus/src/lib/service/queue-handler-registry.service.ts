@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {QueueHandler} from "./interface/queue-handler.interface";
+import {QueueHandler} from "../interface";
 
 @Injectable()
 export class QueueHandlerRegistryService {
@@ -9,6 +9,7 @@ export class QueueHandlerRegistryService {
     if (!this.handlers[queueName]) {
       this.handlers[queueName] = [];
     }
+
     this.handlers[queueName].push(handler);
   }
 

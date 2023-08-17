@@ -1,6 +1,6 @@
 import {Inject, Injectable, Logger, OnModuleDestroy} from '@nestjs/common';
-import {AZURE_SERVICE_BUS_CLIENT} from "./constants";
-import {ServiceBusClient, ServiceBusSender} from "@azure/service-bus";
+import {ServiceBusClient, ServiceBusMessage, ServiceBusSender} from "@azure/service-bus";
+import {AZURE_SERVICE_BUS_CLIENT} from "../constants";
 
 @Injectable()
 export class AzureServiceBusSenderService implements OnModuleDestroy {
@@ -21,16 +21,17 @@ export class AzureServiceBusSenderService implements OnModuleDestroy {
     return this.senders.get(topic);
   }
 
-  public sendThroughTopic<T>(topic: string, message: T) {
+  public sendThroughTopic<T extends unknown>(topic: string, eventType: string, body: T) {
     const sender = this.getSender(topic);
-    console.log("Sending message to topic", topic, message)
-    return sender.sendMessages({
-      body: message
-    });
+    const message: ServiceBusMessage = {body, applicationProperties: {eventType}}
+
+    this.logger.log("Sending message to topic", topic, message)
+    return sender.sendMessages(message);
   }
 
   async onModuleDestroy(): Promise<void> {
-    for (const sender of this.senders.values()) {
+    for (const sender of this.senders.values()
+      ) {
       await sender.close();
     }
     await this.serviceBusClient.close();

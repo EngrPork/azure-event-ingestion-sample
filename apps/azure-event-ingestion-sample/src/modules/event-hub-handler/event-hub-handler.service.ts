@@ -1,9 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {
-  AzureEventHubProducerService,
-  AzureEventHubService,
-  EventHandlerRegistryService
-} from "@azure-event-ingestion-sample/azure/event-hub";
+import {AzureEventHubProducerService} from "@azure-event-ingestion-sample/azure/event-hub";
 
 @Injectable()
 export class EventHubHandlerService {
@@ -11,7 +7,8 @@ export class EventHubHandlerService {
     private readonly azureEventHubProducerService: AzureEventHubProducerService,
   ) {
   }
-  emitHttpToEventHub(body: any) {
+
+  emitHttpToEventHub(body: Record<string, unknown>) {
     this.azureEventHubProducerService.sendMessage(body);
   }
 }

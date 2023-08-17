@@ -1,1 +1,1 @@
-export * from './lib/modules-device.module';
+export * from './lib';
